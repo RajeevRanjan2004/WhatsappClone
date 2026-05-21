@@ -217,6 +217,33 @@ EXPO_PUBLIC_SOCKET_URL=https://your-api-domain.com
 
 Once the backend is deployed and the APK is built, the app can run from the phone directly even when the laptop is off.
 
+### GitHub automation for production
+
+This repo now includes GitHub Actions for the two repeatable tasks you will need most:
+
+- `.github/workflows/render-deploy.yml`
+  - triggers Render backend deploys after pushes to `main`
+- `.github/workflows/eas-android-preview.yml`
+  - starts a cloud Android preview build from GitHub
+
+Set these GitHub repository values once:
+
+- Repository secret: `RENDER_DEPLOY_HOOK_URL`
+- Repository secret: `EXPO_TOKEN`
+- Repository variable: `EXPO_PUBLIC_API_URL`
+- Repository variable: `EXPO_PUBLIC_SOCKET_URL`
+
+Recommended production flow:
+
+1. Create the Render service from `render.yaml`
+2. Copy the Render deploy hook URL into the `RENDER_DEPLOY_HOOK_URL` GitHub secret
+3. Put the public backend URL into:
+   - `EXPO_PUBLIC_API_URL`
+   - `EXPO_PUBLIC_SOCKET_URL`
+4. Run the `Build Android Preview` workflow from the GitHub Actions tab
+
+After that, future backend changes can deploy from GitHub and future APK builds can be triggered without keeping the laptop on.
+
 ## 7. Use the web app on Android mobile
 
 Keep your laptop and Android phone on the same Wi-Fi network.
