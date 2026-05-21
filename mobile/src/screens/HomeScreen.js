@@ -502,6 +502,18 @@ export default function HomeScreen() {
     );
   };
 
+  if (!user?._id) {
+    return (
+      <SafeAreaView style={styles.screen}>
+        <View style={styles.centeredCard}>
+          <ActivityIndicator color={theme.accent} size="large" />
+          <Text style={styles.centeredTitle}>Signing you in</Text>
+          <Text style={styles.centeredCopy}>Session restore aur profile sync complete ho raha hai.</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   const activeConversation = conversations.find((conversation) => conversation._id === activeConversationId) || null;
   const hiddenMessageIds = activeConversationId ? hiddenMessageMap[activeConversationId] || [] : [];
   const visibleMessages = messages.filter((message) => !hiddenMessageIds.includes(message._id));

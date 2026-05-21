@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import apiClient, { setAuthToken } from "../api/client";
@@ -10,6 +10,11 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const userRef = useRef(null);
+
+  useEffect(() => {
+    userRef.current = user;
+  }, [user]);
 
   const clearSession = async () => {
     setToken(null);
@@ -54,6 +59,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     if (!token) {
+      setIsLoading(false);
       return;
     }
 
@@ -77,6 +83,11 @@ export function AuthProvider({ children }) {
         );
       } catch {
         if (!ignore) {
+          if (userRef.current) {
+            setIsLoading(false);
+            return;
+          }
+
           await clearSession();
         }
       } finally {
@@ -94,20 +105,24 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const authenticate = async (mode, payload) => {
+    setIsLoading(true);
     const response = await apiClient.post(`/auth/${mode}`, payload);
 
-    setToken(response.data.token);
-    setUser(response.data.user);
-    setAuthToken(response.data.token);
+    const nextSession = {
+      token: response.data.token,
+      user: response.data.user
+    };
+
+    setAuthToken(nextSession.token);
+    setToken(nextSession.token);
+    setUser(nextSession.user);
     await AsyncStorage.setItem(
       storageKey,
-      JSON.stringify({
-        token: response.data.token,
-        user: response.data.user
-      })
+      JSON.stringify(nextSession)
     );
+    setIsLoading(false);
 
-    return response.data.user;
+    return nextSession.user;
   };
 
   const login = (payload) => authenticate("login", payload);

@@ -8,7 +8,7 @@ import AuthScreen from "./src/screens/AuthScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 
 function AppContent() {
-  const { isLoading, user } = useAuth();
+  const { isLoading, token, user } = useAuth();
   const { theme } = useTheme();
 
   if (isLoading) {
@@ -27,7 +27,7 @@ function AppContent() {
   return (
     <>
       <StatusBar style={theme.mode === "dark" ? "light" : "dark"} />
-      {user ? <HomeScreen /> : <AuthScreen />}
+      {token || user ? <HomeScreen /> : <AuthScreen />}
     </>
   );
 }
