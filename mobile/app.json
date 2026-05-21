@@ -18,6 +18,11 @@
     },
     "ios": {
       "bundleIdentifier": "com.pulsechat.mobile"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dfca1137-3957-412b-80e0-cd5278534648"
+      }
     }
   }
 }
