@@ -9,6 +9,19 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "splash": {
+      "backgroundColor": "#0b141a",
+      "resizeMode": "contain"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0b141a",
+          "resizeMode": "contain"
+        }
+      ]
+    ],
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#0b141a"
