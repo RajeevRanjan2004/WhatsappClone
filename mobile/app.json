@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "PulseChat Mobile",
+    "slug": "pulsechat-mobile",
+    "scheme": "pulsechat",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0b141a"
+      },
+      "package": "com.pulsechat.mobile",
+      "versionCode": 1
+    },
+    "ios": {
+      "bundleIdentifier": "com.pulsechat.mobile"
+    }
+  }
+}

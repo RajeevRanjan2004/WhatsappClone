@@ -1,0 +1,17 @@
+{
+  "name": "PulseChat",
+  "short_name": "PulseChat",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06140f",
+  "theme_color": "#00a884",
+  "icons": [
+    {
+      "src": "/chat-bubble.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

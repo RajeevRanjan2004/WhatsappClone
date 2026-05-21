@@ -1,0 +1,40 @@
+export const themes = {
+  dark: {
+    accent: "#25d366",
+    accentSoft: "rgba(37, 211, 102, 0.14)",
+    background: "#0b141a",
+    border: "rgba(255, 255, 255, 0.08)",
+    bubbleIncoming: "#1f2c34",
+    bubbleOutgoing: "#134d37",
+    card: "#111b21",
+    chip: "#1e272d",
+    danger: "#ff7b7b",
+    divider: "rgba(255, 255, 255, 0.06)",
+    input: "#202c33",
+    mode: "dark",
+    muted: "#8696a0",
+    overlay: "rgba(0, 0, 0, 0.55)",
+    panel: "#101920",
+    panelSoft: "#1a252d",
+    text: "#f5f7f8"
+  },
+  light: {
+    accent: "#128c7e",
+    accentSoft: "rgba(18, 140, 126, 0.12)",
+    background: "#eef4ef",
+    border: "rgba(16, 38, 28, 0.08)",
+    bubbleIncoming: "#ffffff",
+    bubbleOutgoing: "#d8f7e7",
+    card: "#f8fbf9",
+    chip: "#dfe9e2",
+    danger: "#c74343",
+    divider: "rgba(16, 38, 28, 0.06)",
+    input: "#ffffff",
+    mode: "light",
+    muted: "#5a7166",
+    overlay: "rgba(0, 0, 0, 0.26)",
+    panel: "#ffffff",
+    panelSoft: "#edf5f0",
+    text: "#10261c"
+  }
+};
