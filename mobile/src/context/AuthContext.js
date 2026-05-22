@@ -25,6 +25,11 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     let ignore = false;
+    const bootGuardId = setTimeout(() => {
+      if (!ignore) {
+        setIsLoading(false);
+      }
+    }, 6000);
 
     const restoreSession = async () => {
       try {
@@ -44,6 +49,7 @@ export function AuthProvider({ children }) {
       } catch {
         await clearSession();
       } finally {
+        clearTimeout(bootGuardId);
         if (!ignore) {
           setIsLoading(false);
         }
@@ -54,6 +60,7 @@ export function AuthProvider({ children }) {
 
     return () => {
       ignore = true;
+      clearTimeout(bootGuardId);
     };
   }, []);
 

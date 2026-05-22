@@ -3,7 +3,7 @@
     "name": "PulseChat Mobile",
     "slug": "pulsechat-mobile",
     "scheme": "pulsechat",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
@@ -23,6 +23,20 @@
           "backgroundColor": "#0b141a",
           "resizeMode": "contain"
         }
+      ],
+      [
+        "@config-plugins/react-native-webrtc",
+        {
+          "cameraPermission": "Allow PulseChat to access your camera for video calls.",
+          "microphonePermission": "Allow PulseChat to access your microphone for voice and video calls."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Allow PulseChat to access your camera for capturing photos and videos.",
+          "photosPermission": "Allow PulseChat to access your photos and videos for chat attachments."
+        }
       ]
     ],
     "android": {
@@ -32,7 +46,7 @@
         "backgroundColor": "#0b141a"
       },
       "package": "com.pulsechat.mobile",
-      "versionCode": 2
+      "versionCode": 7
     },
     "ios": {
       "bundleIdentifier": "com.pulsechat.mobile"

@@ -5,7 +5,8 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL || fallbackApiUrl;
 const socketUrl = process.env.EXPO_PUBLIC_SOCKET_URL || apiUrl.replace(/\/api\/?$/, "");
 
 const apiClient = axios.create({
-  baseURL: apiUrl
+  baseURL: apiUrl,
+  timeout: 20000
 });
 
 export const setAuthToken = (token) => {

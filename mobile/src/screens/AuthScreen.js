@@ -41,6 +41,10 @@ export default function AuthScreen() {
       return requestError.response.data.message;
     }
 
+    if (requestError?.code === "ECONNABORTED") {
+      return "Server reply me bahut time lag raha hai. Thodi der baad dobara try karo.";
+    }
+
     if (requestError?.code === "ERR_NETWORK") {
       return "Server reach nahi ho raha. Expo public URL ya backend URL check karo.";
     }
@@ -61,17 +65,56 @@ export default function AuthScreen() {
     }));
   };
 
+  const validateAuthForm = () => {
+    const trimmedEmail = form.email.trim().toLowerCase();
+    const trimmedName = form.name.trim();
+
+    if (mode === "register" && !trimmedName) {
+      return "Name required hai.";
+    }
+
+    if (!trimmedEmail) {
+      return "Email required hai.";
+    }
+
+    if (!/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
+      return "Valid email dalo.";
+    }
+
+    if (!form.password) {
+      return "Password required hai.";
+    }
+
+    if (form.password.length < 6) {
+      return "Password at least 6 characters ka hona chahiye.";
+    }
+
+    return "";
+  };
+
   const handleSubmit = async () => {
     setError("");
     setHelper("");
+
+    const validationError = validateAuthForm();
+
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       if (mode === "register") {
-        await register(form);
+        await register({
+          email: form.email.trim().toLowerCase(),
+          name: form.name.trim(),
+          password: form.password
+        });
       } else {
         await login({
-          email: form.email,
+          email: form.email.trim().toLowerCase(),
           password: form.password
         });
       }

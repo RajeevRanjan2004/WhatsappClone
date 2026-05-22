@@ -116,9 +116,9 @@ npm start
 
 ### Run on Android
 
-1. Install Expo Go on Android.
-2. Start Expo with `npm run mobile`.
-3. Scan the QR code from Expo Go.
+1. For chat-only testing, install Expo Go on Android.
+2. For real audio/video calling, install a built APK or use an Expo development build.
+3. Start Expo with `npm run mobile` only when using Expo Go or a dev client.
 4. Make sure the backend URL in `mobile/.env` is reachable from the phone.
 
 ### Android URL notes
@@ -131,6 +131,11 @@ npm start
   - `EXPO_PUBLIC_SOCKET_URL=http://10.0.2.2:5000`
 - Different networks / mobile data:
   - use public HTTPS backend URL or tunnel URL
+  - for reliable calling, also set TURN values in `mobile/.env`:
+    - `EXPO_PUBLIC_STUN_URLS=stun:stun.l.google.com:19302`
+    - `EXPO_PUBLIC_TURN_URLS=turn:your-turn-host:3478`
+    - `EXPO_PUBLIC_TURN_USERNAME=your-turn-username`
+    - `EXPO_PUBLIC_TURN_CREDENTIAL=your-turn-password`
 
 ### Current React Native feature set
 
@@ -140,10 +145,15 @@ npm start
 - Long-press message actions: copy, share, delete for me, delete for everyone
 - Status list from backend stories
 - Settings: profile edit, theme toggle, password change, blocked users
+- Direct audio/video call flow with WebRTC signaling
+- Incoming call receive / decline
+- Active call controls: mute, video on/off, end call
 
-### Current React Native gap
+### Current React Native call notes
 
-- Voice/video call UI is noted in the Calls tab, but native WebRTC calling still needs a dedicated React Native WebRTC package and dev-client setup.
+- Real calling is available in APK/development builds that include native WebRTC.
+- Expo Go does not include `react-native-webrtc`, so call buttons need a built app, not plain Expo Go.
+- Cross-network call reliability is much better with a TURN server configured in `mobile/.env`.
 
 ## 6. Make it work without your laptop
 
