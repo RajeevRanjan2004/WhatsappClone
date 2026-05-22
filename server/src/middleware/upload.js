@@ -21,6 +21,14 @@ const sanitizeFilename = (filename) =>
     .replace(/[^a-z0-9.\-_]/g, "-")
     .replace(/-+/g, "-");
 
+const buildFilename = (file) => {
+  const extension = path.extname(file.originalname || "") || "";
+  const baseName = path.basename(file.originalname || "file", extension);
+  const safeName = sanitizeFilename(baseName) || "file";
+
+  return `${Date.now()}-${Math.round(Math.random() * 1e9)}-${safeName}${extension}`;
+};
+
 const createDiskStorage = (folderName) =>
   multer.diskStorage({
     destination(_req, _file, callback) {
@@ -29,10 +37,7 @@ const createDiskStorage = (folderName) =>
       callback(null, targetDir);
     },
     filename(_req, file, callback) {
-      const extension = path.extname(file.originalname || "") || "";
-      const baseName = path.basename(file.originalname || "file", extension);
-      const safeName = sanitizeFilename(baseName) || "file";
-      callback(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}-${safeName}${extension}`);
+      callback(null, buildFilename(file));
     }
   });
 
@@ -111,13 +116,42 @@ export const uploadStoryMedia = multer({
 
 export const getPublicUploadPath = (folderName, filename) => `/uploads/${folderName}/${filename}`;
 export const getUploadsRoot = () => uploadsRoot;
+
+const persistBufferedFile = (file, folderName) => {
+  const targetDir = path.join(uploadsRoot, folderName);
+  ensureDirectory(targetDir);
+
+  const filename = buildFilename(file);
+  const filePath = path.join(targetDir, filename);
+  fs.writeFileSync(filePath, file.buffer);
+
+  return {
+    storageKey: "",
+    url: getPublicUploadPath(folderName, filename)
+  };
+};
+
 export const storeUploadedFile = async (file, folderName) => {
   if (!file) {
     return null;
   }
 
   if (isCloudinaryConfigured()) {
-    return uploadBufferToCloudinary(file, folderName);
+    try {
+      return await uploadBufferToCloudinary(file, folderName);
+    } catch (error) {
+      console.error(`Cloudinary upload failed for ${folderName}:`, error.message);
+
+      if (file.buffer) {
+        return persistBufferedFile(file, folderName);
+      }
+
+      throw error;
+    }
+  }
+
+  if (file.buffer) {
+    return persistBufferedFile(file, folderName);
   }
 
   return {
